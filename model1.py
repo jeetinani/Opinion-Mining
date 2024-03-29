@@ -1,20 +1,9 @@
-import json
 import pandas as pd
-import numpy as np
-import re
-import sys
-import nltk
-from nltk.corpus import stopwords, sentiwordnet as swn
-from nltk.stem import WordNetLemmatizer
-from nltk import ngrams
 import pickle
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
-import collections
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
 #nltk.download('stopwords')
 stopwords = stopwords.words('english')
 
@@ -211,7 +200,7 @@ for i in range(0,len(df["reviews"])):
     corpus.append(review)
     
 
-from sklearn.feature_extraction.text import TfidfVectorizer
+
 tf=TfidfVectorizer(max_features=15000)
 X=tf.fit_transform(corpus).toarray()
 y=df.iloc[:,1].values

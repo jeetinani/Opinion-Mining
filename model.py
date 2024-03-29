@@ -1,20 +1,13 @@
-import json
 import pandas as pd
 import numpy as np
-import re
-import sys
-import nltk
-from nltk.corpus import stopwords, sentiwordnet as swn
-from nltk.stem import WordNetLemmatizer
-from nltk import ngrams
-import pickle
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.decomposition import LatentDirichletAllocation
-import collections
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+import pickle
+from nltk.sentiment.vader import SentimentIntensityAnalyzer
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.naive_bayes import MultinomialNB
 #nltk.download('stopwords')
 stopwords = stopwords.words('english')
 
@@ -192,23 +185,20 @@ for i in range(0,len(dfs)):
     #review=re.sub('[^a-zA-z]',' ',dfs['reviews'][i])
     review=dfs['reviews'][i].split()
     for j in range(len(review)):
-        if(review[j] in contractions.keys())
+        if(review[j] in contractions.keys()):
             review[j]=contractions[review[j]]
     review=[ls.lemmatize(word) for word in review if not word in replace_list]
     review=' '.join(review)
     corpus.append(review)
 
-from sklearn.feature_extraction.text import TfidfVectorizer
 tf=TfidfVectorizer(max_features=15000)
 X=tf.fit_transform(corpus).toarray()
 y=dfs.iloc[:,1].values
 
 l = []
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix,accuracy_score
+
 X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=0)
-from sklearn.naive_bayes import MultinomialNB
 miner=MultinomialNB().fit(X_train,y_train)
 y_pred=miner.predict(X_test)
 print("The Accuracy using Naive Bayes Algorithm is ",accuracy_score(y_test,y_pred)*100)
@@ -220,10 +210,8 @@ k = analyser.polarity_scores("Good place. But bad service")
 print(k['compound'])
 
 
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix,accuracy_score
 X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=0)
-from sklearn.naive_bayes import MultinomialNB
+
 miner=MultinomialNB().fit(X_train,y_train)
 y_pred=miner.predict(X_test)
 file='model.pkl'
@@ -245,5 +233,3 @@ with open(file,'wb') as file:
 	   #     color = 'blue')
 	#plt.title('BarPlot')
 #plt.show()
-
-
