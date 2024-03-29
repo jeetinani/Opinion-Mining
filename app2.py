@@ -8,12 +8,13 @@ from nltk.stem import WordNetLemmatizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from Helpers.Words import replace_list, contractions, getWordsDictionary
 nltk.download('stopwords')
 stopwords = stopwords.words('english')
 app=Flask(__name__,template_folder='template')
 #app = Flask(__name__, static_folder='static')
 #miner=pickle.load(open('model.pkl','rb'))
-replace_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
+""" replace_list = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
             'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers',
             'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which',
             'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 
@@ -47,7 +48,16 @@ contractions = {"ain't": "am not","aren't": "are not","can't": "cannot","can't'v
     "wouldn't've": "would not have","y'all": "you all","y'all'd": "you all would","y'all'd've": "you all would have",
     "y'all're": "you all are","y'all've": "you all have","you'd": "you would","you'd've": "you would have","you'll": "you will",
     "you'll've": "you will have","you're": "you are","you've": "you have"}
+ """
 
+wordsDictionary = getWordsDictionary()
+
+food=wordsDictionary['food']
+miscelleanous=wordsDictionary['miscelleanous']
+hygiene=wordsDictionary['hygiene']
+service=wordsDictionary['service']
+pricing=wordsDictionary['pricing']
+ambiance=wordsDictionary['ambiance']
 
 @app.route('/')
 def  home_default():
@@ -165,7 +175,7 @@ def predict():
     for i in c:
         lemmatise.append(wordnet_lemmatizer.lemmatize(i))
 
-    fw=pd.read_csv("final words.csv")
+    """ fw=pd.read_csv("final words.csv")
     #print(fw.head())
     food=fw["food"].tolist()
     for i in range(len(food)):
@@ -205,13 +215,14 @@ def predict():
         if(str(x[i])=="nan"):
             break
         miscelleanous.append(x[i][1:-1].lower())
-    #print(miscelleanous[:5],len(miscelleanous))
-    food=list(set(food))
+    #print(miscelleanous[:5],len(miscelleanous))"""
+    """ food=list(set(food))
     miscelleanous=list(set(miscelleanous))
     hygiene=list(set(hygiene))
     service=list(set(service))
     pricing=list(set(pricing))
-    ambiance=list(set(ambiance))
+    ambiance=list(set(ambiance)) """
+    
     food_count=0
     hygiene_count=0
     ambiance_count=0
@@ -312,7 +323,7 @@ def analysis():
         #df["lemmatise"][i]=review
         
 
-    fw=pd.read_csv("final words.csv")
+    """ fw=pd.read_csv("final words.csv")
     #print(fw.head())
     food=fw["food"].tolist()
     for i in range(len(food)):
@@ -365,7 +376,7 @@ def analysis():
     #print(pricing[:5],len(pricing))
     ambiance=list(set(ambiance))
     #print(ambiance[:5],len(ambiance))
-
+ """
     food_count=0
     hygiene_count=0
     ambiance_count=0

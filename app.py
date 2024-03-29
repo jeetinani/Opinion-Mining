@@ -4,16 +4,16 @@ import numpy as np
 from nltk.stem import WordNetLemmatizer
 from flask import Flask,render_template,request
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-#import matplotlib.pyplot as plt
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
+from Helpers.Words import replace_list, contractions, getWordsDictionary
 #import json
 #PEOPLE_FOLDER = os.path.join('static', 'people_photo')
 
 # nltk.download('stopwords')
 #stopwords = stopwords.words('english')
 
-fw=pd.read_csv("shared words list.csv")
+""" fw=pd.read_csv("shared words list.csv")
     #print(fw.head())
 food=fw["food"].tolist()
 for i in range(len(food)):
@@ -65,9 +65,9 @@ service=list(set(service))
 pricing=list(set(pricing))
     #print(pricing[:5],len(pricing))
 ambiance=list(set(ambiance))
-    #print(ambiance[:5],len(ambiance))
+    #print(ambiance[:5],len(ambiance)) """
 
-replace_list=['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
+""" replace_list=['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
             'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers',
             'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which',
             'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 
@@ -101,10 +101,11 @@ contractions = {"ain't": "am not","aren't": "are not","can't": "cannot","can't'v
     "wouldn't've": "would not have","y'all": "you all","y'all'd": "you all would","y'all'd've": "you all would have",
     "y'all're": "you all are","y'all've": "you all have","you'd": "you would","you'd've": "you would have","you'll": "you will",
     "you'll've": "you will have","you're": "you are","you've": "you have"}
-
+ """
 
 app=Flask(__name__,template_folder='template',static_folder='static')
 
+wordsDictionary = getWordsDictionary()
 #app.config['UPLOAD_FOLDER'] = PEOPLE_FOLDER
 
 #miner=pickle.load(open('model.pkl','rb'))
@@ -292,32 +293,32 @@ def predict():
     temp_list=[]
     for j in review_tokenised:
         #temp_list=[]
-        if j in food:
+        if j in wordsDictionary['food']:
             mention_count["food"].append(j)
             if("food" not in temp_list):
                 temp_list.append("food")
                 continue
-        if j in service:
+        if j in wordsDictionary['service']:
             mention_count["service"].append(j)
             if("service" not in temp_list):
                 temp_list.append("service")
                 continue
-        if j in hygiene:
+        if j in wordsDictionary['hygiene']:
             mention_count["hygiene"].append(j)
             if("hygiene" not in temp_list):
                 temp_list.append("hygiene")
                 continue
-        if j in pricing:
+        if j in wordsDictionary['pricing']:
             mention_count["pricing"].append(j)
             if("pricing" not in temp_list):
                 temp_list.append("pricing")
                 continue
-        if j in ambiance:
+        if j in wordsDictionary['ambiance']:
             mention_count["ambience"].append(j)
             if("ambience" not in temp_list):
                 temp_list.append("ambience")
                 continue
-        if j in miscelleanous:
+        if j in wordsDictionary['miscelleanous']:
             mention_count["miscelleanous"].append(j)
             if("miscelleanous" not in temp_list):
                 temp_list.append("miscelleanous")
@@ -457,37 +458,37 @@ def analysis():
     for i in range(len(df["lemmatise"])):
         temp_list=[]
         for j in df["lemmatise"][i]:
-            if j in food:
+            if j in wordsDictionary['food']:
                 mention_count["food"][j]=mention_count["food"].get(j,0)+1
                 if("food" not in temp_list):
                     temp_list.append("food")
                     food_count+=1
                     #food_score+=df["sentiment score"][i]
-            if j in hygiene:
+            if j in wordsDictionary['hygiene']:
                 mention_count["hygiene"][j]=mention_count["hygiene"].get(j,0)+1
                 if("hygiene" not in temp_list):
                     temp_list.append("hygiene")
                     hygiene_count+=1
                     #hygiene_score+=df["sentiment score"][i]
-            if j in service:
+            if j in wordsDictionary['service']:
                 mention_count["service"][j]=mention_count["service"].get(j,0)+1
                 if("service" not in temp_list):
                     temp_list.append("service")
                     service_count+=1
                     #service_score+=df["sentiment score"][i]
-            if j in pricing:
+            if j in wordsDictionary['pricing']:
                 mention_count["pricing"][j]=mention_count["pricing"].get(j,0)+1
                 if("pricing" not in temp_list):
                     temp_list.append("pricing")
                     pricing_count+=1
                     #pricing_score+=df["sentiment score"][i]
-            if j in ambiance:
+            if j in wordsDictionary['ambiance']:
                 mention_count["ambiance"][j]=mention_count["ambiance"].get(j,0)+1
                 if("ambiance" not in temp_list):
                     temp_list.append("ambiance")
                     ambiance_count+=1
                     #ambiance_score+=df["sentiment score"][i]
-            if j in miscelleanous:
+            if j in wordsDictionary['miscelleanous']:
                 mention_count["miscelleanous"][j]=mention_count["miscelleanous"].get(j,0)+1
                 if("miscelleanous" not in temp_list):
                     temp_list.append("miscelleanous")
