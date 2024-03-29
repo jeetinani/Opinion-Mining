@@ -4,6 +4,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
 #nltk.download('stopwords')
 stopwords = stopwords.words('english')
 
@@ -215,7 +216,6 @@ X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=0)
 #tf=TfidfVectorizer(max_features=15000)
 #X=tf.fit_transform(corpus).toarray()
 #y=dfs.iloc[:,1].values"""
-from sklearn.naive_bayes import MultinomialNB
 miner1=MultinomialNB().fit(X,y)
 """y_pred=miner.predict(X_test)
 print("The Accuracy using Naive Bayes Algorithm is ",accuracy_score(y_test,y_pred)*100)
