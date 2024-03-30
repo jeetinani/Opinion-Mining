@@ -6,8 +6,9 @@ from flask import Flask,render_template,request
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from helpers.Words import replace_list, contractions, getWordsDictionary, getMentions
+from helpers.Words import replace_list, contractions, wordsDictionary, getMentions
 from helpers.Transformer import getTransformedReview, getTokenisedReview
+from models.Model import miner, tfidfVectorizer
 #import json
 #PEOPLE_FOLDER = os.path.join('static', 'people_photo')
 
@@ -17,7 +18,7 @@ from helpers.Transformer import getTransformedReview, getTokenisedReview
 
 app=Flask(__name__,template_folder='template',static_folder='static')
 
-wordsDictionary = getWordsDictionary()
+#wordsDictionary = getWordsDictionary()
 #app.config['UPLOAD_FOLDER'] = PEOPLE_FOLDER
 
 #miner=pickle.load(open('model.pkl','rb'))
@@ -35,7 +36,7 @@ def predict():
 
 
 
-    dataSet = pd.read_csv('model-restaurant - restaurant.csv')
+    #dataSet = pd.read_csv('model-restaurant - restaurant.csv')
     #df = df.rename(columns={'text':'reviews'})
 
 
@@ -45,22 +46,19 @@ def predict():
     analyser = SentimentIntensityAnalyzer()
 
     
-    corpus=[]
+    #corpus=[]
 
     #ls=WordNetLemmatizer()
     
-    for review in dataSet['reviews']:
+    """ for review in dataSet['reviews']:
         corpus.append(getTransformedReview(review))
-    
+     """
 
-    
     #df.to_csv("trial.csv")
     
-    
-
-    tfidfVectorizer=TfidfVectorizer(max_features=20000)
+    """ tfidfVectorizer=TfidfVectorizer(max_features=15000)
     X=tfidfVectorizer.fit_transform(corpus).toarray()
-    y=dataSet.iloc[:,1].values
+    y=dataSet.iloc[:,1].values """
 
   
     #from sklearn.model_selection import train_test_split
@@ -72,8 +70,7 @@ def predict():
     original_review=request.form['reviews']
     transformedReview = getTransformedReview(original_review)
     
-    miner=MultinomialNB().fit(X,y)
-
+    #miner=MultinomialNB().fit(X,y)
 
     tester = np.array([transformedReview])
     vector = tfidfVectorizer.transform(tester)
