@@ -1,11 +1,8 @@
 import numpy as np
-import pickle
 import pandas as pd
-import numpy as np
 import re
 import pickle
 from flask import Flask,render_template,request
-from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from nltk.corpus import stopwords
