@@ -190,7 +190,8 @@ def predict():
         review=' '.join(review)
         df["lemmatise"][i]=review
         corpus.append(review)
-    df.to_csv("trial.csv")
+    #df.to_csv("trial.csv")
+    
     """corpus=[]
     ls=WordNetLemmatizer()
     for i in range(0,len(dfs)):
@@ -205,8 +206,9 @@ def predict():
     X=tf.fit_transform(corpus).toarray()
     y=df.iloc[:,1].values
 
-    dfcorp = pd.DataFrame(list(zip(corpus,df.iloc[:,1].values)),columns =['corpus', 'val'])
-    dfcorp.to_csv("corp.csv")    
+    """ dfcorp = pd.DataFrame(list(zip(corpus,df.iloc[:,1].values)),columns =['corpus', 'val'])
+    dfcorp.to_csv("corp.csv") """    
+    
     #from sklearn.model_selection import train_test_split
     #from sklearn.metrics import confusion_matrix,accuracy_score
     #X_train,X_test,y_train,y_test=train_test_split(X,y,test_size=0.2,random_state=0)
