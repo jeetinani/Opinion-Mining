@@ -8,7 +8,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from Helpers.Words import replace_list, contractions, getWordsDictionary
+from helpers.Words import replace_list, contractions, getWordsDictionary
 nltk.download('stopwords')
 stopwords = stopwords.words('english')
 app=Flask(__name__,template_folder='template')

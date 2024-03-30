@@ -6,8 +6,8 @@ from flask import Flask,render_template,request
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from Helpers.Words import replace_list, contractions, getWordsDictionary, getMentions
-from Helpers.Transformer import getTransformedReview, getTokenisedReview
+from helpers.Words import replace_list, contractions, getWordsDictionary, getMentions
+from helpers.Transformer import getTransformedReview, getTokenisedReview
 #import json
 #PEOPLE_FOLDER = os.path.join('static', 'people_photo')
 

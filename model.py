@@ -8,7 +8,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 from sklearn.naive_bayes import MultinomialNB
-from Helpers.Words import replace_list, contractions
+from helpers.Words import replace_list, contractions
 #nltk.download('stopwords')
 stopwords = stopwords.words('english')
 
