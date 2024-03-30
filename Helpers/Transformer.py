@@ -1,9 +1,14 @@
-from Words import replace_list, contractions
+from Helpers.Words import replace_list, contractions
+
+import re
 
 from nltk.stem import WordNetLemmatizer
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 
-def getTransform(review):
+def getTokenisedReview(review):
+    return re.sub('[^a-zA-z]',' ',review).strip().split()
+
+def getTransformedReview(review):
     #df = pd.read_csv('model-restaurant - restaurant.csv')
     #df = df.rename(columns={'text':'reviews'})
 
@@ -42,7 +47,7 @@ def getTransform(review):
     dfs=pd.concat([dfs,data],axis='columns')"""
 
 
-    review = review.lower().replace("!"," ").replace(',',' ').replace("."," ").strip().split()
+    review = getTokenisedReview(review)
     #replace('[^\w\s]', ' ').str.replace(" \d+", " ").str.replace(' +', ' ').str.strip()
 
     #df['tokenise'] = df.apply(lambda row: nltk.word_tokenize(row[1]), axis=1)

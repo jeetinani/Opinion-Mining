@@ -169,11 +169,11 @@ def predict():
     for i in tokenise:
         if(i not in stopwords):
             c.append(i)
-    wordnet_lemmatizer = WordNetLemmatizer()
+    wordNetLemmatizer = WordNetLemmatizer()
     lemmatise=[]
 
     for i in c:
-        lemmatise.append(wordnet_lemmatizer.lemmatize(i))
+        lemmatise.append(wordNetLemmatizer.lemmatize(i))
 
     """ fw=pd.read_csv("final words.csv")
     #print(fw.head())
