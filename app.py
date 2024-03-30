@@ -6,7 +6,7 @@ from flask import Flask,render_template,request
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from Helpers.Words import replace_list, contractions, getWordsDictionary
+from Helpers.Words import replace_list, contractions, getWordsDictionary, getMentions
 from Helpers.Transformer import getTransformedReview, getTokenisedReview
 #import json
 #PEOPLE_FOLDER = os.path.join('static', 'people_photo')
@@ -35,7 +35,7 @@ def predict():
 
 
 
-    df = pd.read_csv('model-restaurant - restaurant.csv')
+    dataSet = pd.read_csv('model-restaurant - restaurant.csv')
     #df = df.rename(columns={'text':'reviews'})
 
 
@@ -49,7 +49,7 @@ def predict():
 
     #ls=WordNetLemmatizer()
     
-    for review in df['reviews']:
+    for review in dataSet['reviews']:
         corpus.append(getTransformedReview(review))
     
 
@@ -58,9 +58,9 @@ def predict():
     
     
 
-    tf=TfidfVectorizer(max_features=20000)
-    X=tf.fit_transform(corpus).toarray()
-    y=df.iloc[:,1].values
+    tfidfVectorizer=TfidfVectorizer(max_features=20000)
+    X=tfidfVectorizer.fit_transform(corpus).toarray()
+    y=dataSet.iloc[:,1].values
 
   
     #from sklearn.model_selection import train_test_split
@@ -76,7 +76,7 @@ def predict():
 
 
     tester = np.array([transformedReview])
-    vector = tf.transform(tester)
+    vector = tfidfVectorizer.transform(tester)
     prediction = miner.predict(vector)
     if(prediction == 0):
         ans="Negative"
@@ -122,52 +122,59 @@ def predict():
     # miscelleanous_count=0
     # service_count=0
 
-    mention_count={"food":[],"ambience":[],"service":[],"hygiene":[],"pricing":[],"miscelleanous":[]}
+    """ mentions={"food":[],"ambience":[],"service":[],"hygiene":[],"pricing":[],"miscelleanous":[]}
     temp_list=[]
     for j in getTokenisedReview(original_review):
         #temp_list=[]
         if j in wordsDictionary['food']:
-            mention_count["food"].append(j)
+            mentions["food"].append(j)
             if("food" not in temp_list):
                 temp_list.append("food")
                 continue
         if j in wordsDictionary['service']:
-            mention_count["service"].append(j)
+            mentions["service"].append(j)
             if("service" not in temp_list):
                 temp_list.append("service")
                 continue
         if j in wordsDictionary['hygiene']:
-            mention_count["hygiene"].append(j)
+            mentions["hygiene"].append(j)
             if("hygiene" not in temp_list):
                 temp_list.append("hygiene")
                 continue
         if j in wordsDictionary['pricing']:
-            mention_count["pricing"].append(j)
+            mentions["pricing"].append(j)
             if("pricing" not in temp_list):
                 temp_list.append("pricing")
                 continue
         if j in wordsDictionary['ambiance']:
-            mention_count["ambience"].append(j)
+            mentions["ambience"].append(j)
             if("ambience" not in temp_list):
                 temp_list.append("ambience")
                 continue
         if j in wordsDictionary['miscelleanous']:
-            mention_count["miscelleanous"].append(j)
+            mentions["miscelleanous"].append(j)
             if("miscelleanous" not in temp_list):
                 temp_list.append("miscelleanous")
                 continue
     if(len(temp_list)==0):
-        temp_list.append("miscelleanous")
+        temp_list.append("miscelleanous") """
     #aspects=', '.join(temp_list)
-    aspects=""
+    """ aspects=""
     for i in temp_list:
         aspects+=i
-        if(len(mention_count[i])!=0):
-            aspects+="("+', '.join(mention_count[i])
-        aspects+=");\n\n  "
-    aspects="Aspects mentioned are "+aspects
+        if(len(mentions[i])!=0):
+            aspects+="("+', '.join(mentions[i])
+        aspects+=");\n\n  " """
+    mentions = getMentions(getTokenisedReview(original_review))
+    aspectResponse=[]
+    for key,value in mentions.items() :
+        if(len(value)>0):
+            aspectResponse.append(key+'('+','.join(value)+')')
+    if(len(aspectResponse)==0):
+        aspectResponse.append('Miscelleanous')
+            
 
-    return render_template('predict.html',predict_text='review is {}'.format(ans),score=rating,aspects=aspects,
+    return render_template('predict.html',predict_text='Review is {}'.format(ans),score=rating,aspects="Aspects mentioned are : {}".format(','.join(aspectResponse)),
         int_features="Entered Review : {}".format(original_review))
 
     # return render_template('predict.html',predict_text='review is {}'.format(ans),score=rating,aspects=aspects,

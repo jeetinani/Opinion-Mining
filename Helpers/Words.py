@@ -3,7 +3,7 @@ import pandas as pd
 finalWords=pd.read_csv('Helpers/shared words list.csv')
 #print(finalWords.head())
 
-replace_list=['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
+replace_list=('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
             'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers',
             'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which',
             'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am', 'is', 'are', 'was', 'were', 'be', 'been', 
@@ -12,7 +12,7 @@ replace_list=['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you'
             'during', 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over',
             'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all', 'any',
             'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'only', 'own', 'same', 'so', 'than', 'too',
-            'can', 'will', 'just', 'now']
+            'can', 'will', 'just', 'now')
 
 contractions = {"ain't": "am not","aren't": "are not","can't": "cannot","can't've": "cannot have","'cause": "because",
     "could've": "could have","couldn't": "could not","couldn't've": "could not have","didn't": "did not","doesn't": "does not",
@@ -36,7 +36,6 @@ contractions = {"ain't": "am not","aren't": "are not","can't": "cannot","can't'v
     "wouldn't've": "would not have","y'all": "you all","y'all'd": "you all would","y'all'd've": "you all would have",
     "y'all're": "you all are","y'all've": "you all have","you'd": "you would","you'd've": "you would have","you'll": "you will",
     "you'll've": "you will have","you're": "you are","you've": "you have"}
-
 
 def getList(category):
     words=finalWords[category].tolist()
@@ -108,3 +107,25 @@ def getWordsDictionary():
         #print(pricing[:5],len(pricing))
     ambiance=list(set(ambiance))
         #print(ambiance[:5],len(ambiance))
+
+wordsDictionary = getWordsDictionary()
+
+def getMentions(review):
+    if(type(review)==str):
+        review = review.split()
+    mentions={"food":[],"ambience":[],"service":[],"hygiene":[],"pricing":[],"miscelleanous":[]}
+    for j in review:
+        #temp_list=[]
+        if j in wordsDictionary['food']:
+            mentions["food"].append(j)
+        if j in wordsDictionary['service']:
+            mentions["service"].append(j)
+        if j in wordsDictionary['hygiene']:
+            mentions["hygiene"].append(j)
+        if j in wordsDictionary['pricing']:
+            mentions["pricing"].append(j)
+        if j in wordsDictionary['ambiance']:
+            mentions["ambience"].append(j)
+        if j in wordsDictionary['miscelleanous']:
+            mentions["miscelleanous"].append(j)
+    return mentions
