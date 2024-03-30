@@ -3,6 +3,13 @@ import pandas as pd
 finalWords=pd.read_csv('helpers/shared words list.csv')
 #print(finalWords.head())
 
+positive_rest = ('good','amazing','awesome','great','tasty','divine','delicious','yumm','yummy','fingerlicking',
+    'heavenly','appetizing','flavorful','palatable','flavorful','flavorsome','good-tasting','superb',
+    'fingerlicking','flawless','beautiful',"garnishing","garnished","sweet","savoury",'enjoy','enjoyed')
+negative_rest = ('old','yuck','ewww','expensive','costly','inedible','stale','nasty','bland',
+    'rancid','junk','contaminated','lousy',"ugly","smelly","tasteless","sour","salty","bad",
+    'worst','worse','sad','horrible','crazy')
+
 replace_list=('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
             'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's", 'her', 'hers',
             'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs', 'themselves', 'what', 'which',
