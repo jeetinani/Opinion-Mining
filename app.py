@@ -1,12 +1,8 @@
 import numpy as np
 import pandas as pd
-import numpy as np
-from nltk.stem import WordNetLemmatizer
 from flask import Flask,render_template,request
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from helpers.Words import replace_list, contractions, wordsDictionary, getMentions
+from helpers.Words import getMentionsandCount, getTotal
 from helpers.Transformer import getTransformedReview, getTokenisedReview
 from models.Model import miner, tfidfVectorizer
 #import json
@@ -119,54 +115,12 @@ def predict():
     # miscelleanous_count=0
     # service_count=0
 
-    """ mentions={"food":[],"ambience":[],"service":[],"hygiene":[],"pricing":[],"miscelleanous":[]}
-    temp_list=[]
-    for j in getTokenisedReview(original_review):
-        #temp_list=[]
-        if j in wordsDictionary['food']:
-            mentions["food"].append(j)
-            if("food" not in temp_list):
-                temp_list.append("food")
-                continue
-        if j in wordsDictionary['service']:
-            mentions["service"].append(j)
-            if("service" not in temp_list):
-                temp_list.append("service")
-                continue
-        if j in wordsDictionary['hygiene']:
-            mentions["hygiene"].append(j)
-            if("hygiene" not in temp_list):
-                temp_list.append("hygiene")
-                continue
-        if j in wordsDictionary['pricing']:
-            mentions["pricing"].append(j)
-            if("pricing" not in temp_list):
-                temp_list.append("pricing")
-                continue
-        if j in wordsDictionary['ambiance']:
-            mentions["ambience"].append(j)
-            if("ambience" not in temp_list):
-                temp_list.append("ambience")
-                continue
-        if j in wordsDictionary['miscelleanous']:
-            mentions["miscelleanous"].append(j)
-            if("miscelleanous" not in temp_list):
-                temp_list.append("miscelleanous")
-                continue
-    if(len(temp_list)==0):
-        temp_list.append("miscelleanous") """
     #aspects=', '.join(temp_list)
-    """ aspects=""
-    for i in temp_list:
-        aspects+=i
-        if(len(mentions[i])!=0):
-            aspects+="("+', '.join(mentions[i])
-        aspects+=");\n\n  " """
-    mentions = getMentions(getTokenisedReview(original_review))
+    mentions = getMentionsandCount([getTokenisedReview(original_review)])
     aspectResponse=[]
     for key,value in mentions.items() :
         if(len(value)>0):
-            aspectResponse.append(key+'('+','.join(value)+')')
+            aspectResponse.append(key+'('+','.join(value.keys())+')')
     if(len(aspectResponse)==0):
         aspectResponse.append('Miscelleanous')
             
@@ -189,42 +143,7 @@ def analysis():
         if(i==0):
             negative_count+=1
         else:
-            positive_count+=1
-
-    """sentiment_count=np.array([positive_count,negative_count])
-    sentiment_labels=["Positive","Negative"]
-    pie_chart=plt.pie(sentiment_count,labels=sentiment_labels)
-    #plt.show()
-    #plt.savefig("pie_chart.png")
-    sentiment_count_list=[positive_count,negative_count]"""
-
-
-    #df['remove_lower_punct'] = df['reviews'].str.lower().str.replace('[^\w\s]', ' ').str.replace(" \d+", " ").str.replace(' +', ' ').str.strip()
-    df['remove_lower_punct'] = df['reviews'].str.lower().str.replace(',', ' ').str.replace("!", " ").str.replace('.', ' ').str.strip()
-    #df['tokenise'] = df.apply(lambda row: nltk.word_tokenize(row[1]), axis=1)
-
-    df['tokenise'] = df['remove_lower_punct'].apply(lambda row:row.split())	
-
-    df['lemmatise'] = df['tokenise']
-    
-    ls=WordNetLemmatizer()
-
-    for i in range(len(df['lemmatise'])):
-        review=df['lemmatise'][i]
-        for j in review:
-            temp_review=[]
-            if(j in contractions.keys()):
-                temp_review.append(contractions[j])
-            else:
-                temp_review.append(j)
-        review=' '.join(temp_review)
-        review=review.split()
-        review=[word for word in review if word not in replace_list]
-        review=[ls.lemmatize(word) for word in review]
-        #df["lemmatise"][i]=review
-        
-
-    
+            positive_count+=1   
 
     food_count=0
     hygiene_count=0
@@ -232,13 +151,8 @@ def analysis():
     pricing_count=0
     miscelleanous_count=0
     service_count=0
-    # food_score=0
-    # service_score=0
-    # hygiene_score=0
-    # ambiance_score=0
-    # pricing_score=0
-    # miscelleanous_score=0
-    mention_count={"food":{},"ambiance":{},"service":{},"hygiene":{},"pricing":{},"miscelleanous":{}}
+
+    """ mention_count={"food":{},"ambiance":{},"service":{},"hygiene":{},"pricing":{},"miscelleanous":{}}
     df['aspects']=df.apply(lambda _: '', axis=1)
     for i in range(len(df["lemmatise"])):
         temp_list=[]
@@ -283,21 +197,27 @@ def analysis():
             temp_list.append("miscelleanous")
             miscelleanous_count+=1
             #miscelleanous_score+=df["sentiment score"][i] 
-        #df["aspects"][i] = temp_list
+        #df["aspects"][i] = temp_list """
 
+    corpus=[]
+    for review in df['reviews']:
+        corpus.append(getTokenisedReview(review))
+        
+    mention_count = getMentionsandCount(corpus)
 
     aspect_labels=["Food","Service","Ambience","Pricing","Hygiene","Miscelleanous"]
-    aspect_counts=[food_count,service_count,ambiance_count,pricing_count,hygiene_count,miscelleanous_count]
+    aspect_counts=[getTotal(mention_count['food']),
+                   getTotal(mention_count['service']),
+                   getTotal(mention_count['ambiance']),
+                   getTotal(mention_count['pricing']),
+                   getTotal(mention_count['hygiene']),
+                   getTotal(mention_count['miscelleanous'])]
     # plt.bar(aspect_labels,aspect_counts)
     # plt.title("Count of Aspects Mentioned in reviews")
     # plt.xlabel("Aspects")
     # plt.ylabel("Count of Reviews in which said aspect is mentioned")
     #plt.show()
 
-    #full_filename = os.path.join(app.config['UPLOAD_FOLDER'], 'pie_chart.jpeg')
-
-    # with open('C:/Users/KP Inani/Downloads/flask_app1/template/mention_count.json', 'w') as outfile:
-    # 	json.dump(mention_count, outfile)
     wordcloud_food=""
     for k,v in mention_count["food"].items():
         for j in range(v):

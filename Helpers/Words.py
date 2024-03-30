@@ -37,6 +37,12 @@ contractions = {"ain't": "am not","aren't": "are not","can't": "cannot","can't'v
     "y'all're": "you all are","y'all've": "you all have","you'd": "you would","you'd've": "you would have","you'll": "you will",
     "you'll've": "you will have","you're": "you are","you've": "you have"}
 
+def getTotal(dic):
+    sum = 0
+    for count in dic.values():
+        sum = sum + count
+    return sum
+
 def getList(category):
     words=finalWords[category].tolist()
     returnWords = []
@@ -110,22 +116,21 @@ def getWordsDictionary():
 
 wordsDictionary = getWordsDictionary()
 
-def getMentions(review):
-    if(type(review)==str):
-        review = review.split()
-    mentions={"food":[],"ambience":[],"service":[],"hygiene":[],"pricing":[],"miscelleanous":[]}
-    for j in review:
-        #temp_list=[]
-        if j in wordsDictionary['food']:
-            mentions["food"].append(j)
-        if j in wordsDictionary['service']:
-            mentions["service"].append(j)
-        if j in wordsDictionary['hygiene']:
-            mentions["hygiene"].append(j)
-        if j in wordsDictionary['pricing']:
-            mentions["pricing"].append(j)
-        if j in wordsDictionary['ambiance']:
-            mentions["ambience"].append(j)
-        if j in wordsDictionary['miscelleanous']:
-            mentions["miscelleanous"].append(j)
+def getMentionsandCount(reviews):
+    
+    mentions={"food":{},"ambiance":{},"service":{},"hygiene":{},"pricing":{},"miscelleanous":{}}
+    for review in reviews:
+        for j in review:
+            if j in wordsDictionary['food']:
+                mentions["food"][j]=mentions["food"].get(j,0)+1    
+            if j in wordsDictionary['service']:
+                mentions["service"][j]=mentions["service"].get(j,0)+1
+            if j in wordsDictionary['hygiene']:
+                mentions["hygiene"][j]=mentions["hygiene"].get(j,0)+1
+            if j in wordsDictionary['pricing']:
+                mentions["pricing"][j]=mentions["pricing"].get(j,0)+1
+            if j in wordsDictionary['ambiance']:
+                mentions["ambiance"][j]=mentions["ambiance"].get(j,0)+1
+            if j in wordsDictionary['miscelleanous']:
+                mentions["miscelleanous"][j]=mentions["miscelleanous"].get(j,0)+1
     return mentions
