@@ -1,4 +1,4 @@
-from Helpers.Words import replace_list, contractions
+from helpers.Words import replace_list, contractions
 
 import re
 

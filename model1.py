@@ -5,7 +5,7 @@ from nltk.stem import WordNetLemmatizer
 from nltk.corpus import stopwords
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
-from Helpers.Words import replace_list, contractions
+from helpers.Words import replace_list, contractions
 #nltk.download('stopwords')
 stopwords = stopwords.words('english')
 

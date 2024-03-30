@@ -1,6 +1,6 @@
 import pandas as pd
 
-finalWords=pd.read_csv('Helpers/shared words list.csv')
+finalWords=pd.read_csv('helpers/shared words list.csv')
 #print(finalWords.head())
 
 replace_list=('i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll", "you'd",
