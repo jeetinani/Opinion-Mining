@@ -73,7 +73,7 @@ def predict():
 @app.route('/analysis')
 def analysis():
 
-    df = pd.read_csv('model-restaurant - restaurant.csv')
+    df = pd.read_csv('datasheets/model-restaurant - restaurant.csv')
 
     positive_count=0
     negative_count=0

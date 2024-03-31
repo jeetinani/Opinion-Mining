@@ -1,6 +1,6 @@
 import pandas as pd
 
-finalWords=pd.read_csv('helpers/shared words list.csv')
+finalWords=pd.read_csv('datasheets/shared words list.csv')
 #print(finalWords.head())
 
 positive_rest = ('good','amazing','awesome','great','tasty','divine','delicious','yumm','yummy','fingerlicking',

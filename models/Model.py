@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.naive_bayes import MultinomialNB
 from helpers.Transformer import getTransformedReview
 
-dataSet = pd.read_csv('model-restaurant - restaurant.csv')
+dataSet = pd.read_csv('datasheets/model-restaurant - restaurant.csv')
 
 def loadVectorizer():
     return TfidfVectorizer(max_features=15000)
