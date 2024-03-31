@@ -1,8 +1,6 @@
 import re
 from helpers.Words import replace_list, contractions
 from nltk.stem import WordNetLemmatizer
-from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
 def getTokenisedReview(review):
     return re.sub('[^a-zA-z]',' ',review).strip().split()
 
